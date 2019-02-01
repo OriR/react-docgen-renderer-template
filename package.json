@@ -1,0 +1,27 @@
+{
+  "name": "react-docgen-renderer-template",
+  "version": "0.0.0",
+  "description": "Allows you to create your own react-docgen based renderers",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "lab",
+    "test:debug": "lab --coverage-exclude lib --inspect-brk",
+    "test:coverage:html": "lab -r console -o stdout -r html -o coverage.html"
+  },
+  "keywords": [
+    "react",
+    "react-docgen",
+    "template",
+    "render"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OriR/react-docgen-renderer-template"
+  },
+  "author": "Ori Riner",
+  "license": "MIT",
+  "devDependencies": {
+    "code": "^5.2.0",
+    "lab": "^15.5.0"
+  }
+}
