@@ -7,6 +7,7 @@ npm install --save-dev react-docgen-renderer-template
 ```
 
 ### Usage
+**Template Creators**
 ```javascript
 const { template, type } = require('react-docgen-renderer-template');
 
@@ -50,6 +51,22 @@ ${({ context, getType}) => {
 }}`
 
 ```
+
+The result of the template should be passed as-is to a renderer instance, for example [`react-docgen-markdown-renderer`](https://github.com/OriR/react-docgen-markdown-render).
+
+**Renderer Creators**
+The `TemplateObject` contains two methods.
+
+**template.setPlugins**
+This function gets an array of plugins to apply on the template.
+A plugin is an object with a function `getTypeMapping` that gets an options object with an `extension` - the extension of the template. That function returns an object with a key/value pairs, where each key is a type returned by `react-docgen` and the value is either a string to display for that type or a template string with functions as the templates (these will be called to populate the actual type) and should return a string.
+
+**template.instantiate**
+This function instatiates the template.</br>
+It gets the context to apply on the template, and the extension this template will be saved as (typically the format).</br>
+This function returns the full blown template as a sring to be saved to the disk.
+
+
 
 ### License
 MIT
