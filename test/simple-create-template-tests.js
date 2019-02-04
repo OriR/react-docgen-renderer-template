@@ -50,6 +50,11 @@ lab.experiment('create template', () => {
     expect(result).to.equal('String');
   });
 
+  lab.test('with custom types using getType', () => {
+    const result = template({ number: 'Number', string: type`${({ context, getType }) => getType(context.entire.type)}` })`${emptyTemplate}`.instantiate({ name: 'string', raw: 'String', type: { name: 'number' } });
+    expect(result).to.equal('Number');
+  });
+
   lab.test('with simple type', () => {
     const result = template()`${emptyTemplate}`.instantiate({ value: 'String' });
     expect(result).to.equal('String');
