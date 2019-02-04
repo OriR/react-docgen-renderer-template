@@ -12,9 +12,21 @@ lab.experiment('create template', () => {
   });
 
   lab.test('without type mapping', () => {
-    expect(() => template()`${emptyTemplate}`.instantiate({ name: 'string' }))
-    .to.throw(Error, `Can't construct type of 'string' because got 'undefined' please check with your plugins to make sure they're using the 'type' template literal.`);
+    const warn = console.warn;
+    let warnArgs;
+    console.warn = (...args) => (warnArgs = args);
+    
+    template()`${emptyTemplate}`.instantiate({ name: 'string' });
+
+    expect(warnArgs[0]).to.equal('Unknown prop type found in docs -> \'string\' falling back to \'Unknown\'.')
+  
+    console.warn = warn;
   });
+
+  lab.test('when overriding unknown with no type', () => {
+    expect(() => template({ unknown: null })`${emptyTemplate}`.instantiate({ name: 'string' }))
+    .to.throw(Error, `Can't construct type of 'string' because got 'undefined' please check with your plugins to make sure they're using the 'type' template literal and that you're not overriding the 'unknown' type by mistake.`);
+  })
 
   lab.test('with plugins', () => {
     const templateObject = template()`${emptyTemplate}`;
@@ -41,5 +53,11 @@ lab.experiment('create template', () => {
   lab.test('with simple type', () => {
     const result = template()`${emptyTemplate}`.instantiate({ value: 'String' });
     expect(result).to.equal('String');
+  });
+
+  lab.test('with custom type reference to entire context', () => {
+    const context = { props: [{ name: 'string' }], additionalContext: 'context' };
+    const result = template({ string: type`${({ context }) => context.entire.additionalContext}` })`${({ context, getType }) => getType(context.props[0])}`.instantiate(context);
+    expect(result).to.equal(context.additionalContext);
   });
 });
