@@ -1,0 +1,8 @@
+# Test files
+test
+.labrc.js
+coverage.html
+
+# version manager files
+.tool-versions
+.nvmrc
